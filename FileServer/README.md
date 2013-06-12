@@ -10,15 +10,18 @@ downloadable file. The port is also configurable.
 Then run it.
 
 	`node server.js`
-
+	
 ## Limitations
 
-There are a number of limitations to this application. It was intended as a personal learning exercise. 
+There are a number of limitations to this application. It was intended as a 
+personal learning exercise. 
 * It's hard coded to serve one file only.
 * It doesn't filter out `POST` requests.
+* Limited security. (URL == filename) 
 * Probably more I don't know about.
 
-Thare are a number of static file server frameworks around that are much more flexible. Consider using the following:
+There are a number of static file server frameworks around that are much more
+flexible. Consider using the following:
 
 * [node-static](https://github.com/cloudhead/node-static)
 * [node-paperboy](https://github.com/felixge/node-paperboy)
