@@ -5,8 +5,8 @@
 var fs = require('fs');
 
 var port = 1337;
-var filename = 'README.md';
-var contentType  = "text/plain";
+var filename = 'books.zip';
+var contentType  = "application/zip";
 
 require('http').createServer(function (req, res) {
 	fs.exists('./' + filename, sendFile);
@@ -31,7 +31,7 @@ require('http').createServer(function (req, res) {
 			res.setHeader('Content-disposition', 'attachment; filename=' + filename);
 			res.writeHead(200, {"Content-Type": contentType});
 		}).on('readable', function (data) {
-			res.write(stream.read());
+			res.write(stream.read(), 'binary');
 		}).on('end', function (err) {
 			res.end();
 		});
