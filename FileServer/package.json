@@ -1,0 +1,18 @@
+{
+  "name": "FileServer",
+  "version": "0.1.0",
+  "description": "FileServer",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
+  },
+  "repository": "https://github.com/ShurakaiSoft/FileServer.git",
+  "keywords": [
+    "Node.js",
+    "Eclipse",
+    "Nodeclipse"
+  ],
+  "author": "Stephen Parker",
+  "license": "BSD",
+  "readmeFilename": "README.md"
+}
