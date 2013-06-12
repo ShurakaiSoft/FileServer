@@ -1,30 +1,34 @@
 /**
- * Stream a static file via http.
+ * Stream a static file via http, with simple security challenge.
+ * 
+ * 
  */
 
 var fs = require('fs');
+var url = require('url');
 
 var port = 1337;
-var filename = 'books.zip';
+var filename = './books.zip';
 var contentType  = "application/zip";
 
 require('http').createServer(function (req, res) {
-	fs.exists('./' + filename, sendFile);
-			
+	requestedFilename = '';
+
+	function sendError() {
+		res.writeHead(500, {"Content-Type": "text/plain"});
+		res.end("500, Internal Server Error");
+	}
+	
 	function sendFile(file) {
 		var stream = null;
 		
 		if (!file) {
-			res.writeHead(401, {"Content-Type": "text/plain"});
-			res.end("401, Permission Denied");
+			sendError();
 			return;
 		}
-		
-		stream = fs.createReadStream('./' + filename);
-
+		stream = fs.createReadStream(filename);
 		stream.on('error', function (err) {
-			res.writeHead(500, {"Content-Type": "text/plain"});
-			res.end("500, Internal Server Error");
+			sendError();
 			return;
 		}).on('open', function () {
 			console.log("Serving:", filename);
@@ -35,6 +39,15 @@ require('http').createServer(function (req, res) {
 		}).on('end', function (err) {
 			res.end();
 		});
+	}
+
+	requestedFilename = '.' + url.parse(req.url).pathname;
+	if (requestedFilename === filename) {
+		sendFile(filename);
+	} else {
+		console.log("Security challenge failed: request for: '%s' from: %s", requestedFilename, req.connection.remoteAddress);
+		res.writeHead(401, {'Content-Type': 'text/plain'});
+		res.end("Forbidden: invalid file request.");
 	}
 }).listen(port, function (err) {
 	if (err) {
